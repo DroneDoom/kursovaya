@@ -1,0 +1,34 @@
+#include "UnitTest++/UnitTest++.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include "Cryptographer.h"
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/md5.h>
+#include <cryptopp/hex.h>
+using namespace std;
+
+
+SUITE(EncryptTest)
+{
+	TEST(ValidKey)
+			{
+				//прописные
+				CHECK_EQUAL("5F4DCC3B5AA765D61D8327DEB882CF99", Cryptographer().encrypt("password"));
+				//Строчные
+				CHECK_EQUAL("319F4D26E3C536B5DD871BB2C52E3178", Cryptographer().encrypt("PASSWORD"));
+				//С пробелами и знаками препинания
+				CHECK_EQUAL("D252F25E94BE3FBDF86A634561C10A84", Cryptographer().encrypt("PASS WORD!"));
+				//С цифрами
+				CHECK_EQUAL("6F0F4D469EAEAD0AC18DA3A460F263B6", Cryptographer().encrypt("PASSWORD123"));
+				//Пустая строка
+				CHECK_EQUAL("D41D8CD98F00B204E9800998ECF8427E", Cryptographer().encrypt(""));
+				//Нет букв
+				CHECK_EQUAL("202CB962AC59075B964B07152D234B70", Cryptographer().encrypt("123"));
+			}
+}
+
+int main()
+{
+    return UnitTest::RunAllTests();
+}
